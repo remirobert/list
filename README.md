@@ -1,8 +1,27 @@
 <h1 align="center">List</h1>
 
-Simple list library written in C. Works with generic data, and use pointers to functions for handle the data.
+This document is written for C programmers. Since you’re reading this, chances are that you know a list is used for store items in a mutable way. This software provides complete list system.
+
+This is just a single header file: list.h. All you need to do is copy the header file into your project, and:
+```C
+#include "list.h"
+```
+Since list is a header file only, you don't need to link any code. It's very portable, easy to use, and very fast integration.
+
+<h4 align="center">Features</h4>
+```C
+LIST_PUSH(list, data_element, function)
+MAP_LIST(list, map_fct, arg)
+MAP_LIST_WITH_BREAK(list, map_fct, arg)
+MAP_LIST_WITH_MATCH(list, map_fct, match_fct, arg)
+DELETE_ALL_LIST(list)
+LIST_POP(list)
+LIST_REMOVE_WITH_DATA(head_list, node, match_fct)
+```
 
 <h4 align="center">Overview</h4>
+
+Each item has a free function for free the data only.
 ```C
 typedef struct s_list t_list;
 
@@ -13,98 +32,6 @@ typedef struct          s_list
   struct s_list         *next;
 }                       t_list;
 ```
-
-<h2 align="center">Example</h2>
-
-<h2 align="center">Push list</h2>
-
-```C
-struct point {
-  int x;
-  int y;
-};
-
-void free_point(void *point) {
-  free(point);
-}
-
-void add_point_to_list(t_list **list, int x, int y) {
-  struct point *new_point = malloc(sizeof(struct point));
-
-  if (new_point) {
-    new_point->x = x;
-    new_point->y = y;
-    list_push(list, (void *)new_point, free_point);
-  }
-}
-
-int main(int argc, char **argv) {
-
-  t_list *list = NULL;
-
-  add_point_to_list(&list, 2, 3);
-  add_point_to_list(&list, 3, 4);
-
-  return (0);
-}
-```
-
-<h2 align="center">Map list</h2>
-
-```C
-void display_list(t_list *current_element, void *data) {
-
-  printf("current point x :%d y : %d\n", ((struct point *)current_element->data)->x,
-	 ((struct point *)current_element->data)->y);
-}
-
-void increment_position(t_list *current_element, void *data) {
-  ((struct point *)current_element->data)->x += *((int *)data);
-  ((struct point *)current_element->data)->y += *((int *)data);
-}
-
-//...
-
-int main(int argc, char **argv) {
-
-  t_list *list = NULL;
-
-  //...
-  
-  int increment_value = 3;
-  map_list(list, increment_position, &increment_value);
-  map_list(list, display_list, NULL);
-
-  return (0);
-}
-```
-
-<h2 align="center">Remove list</h2>
-
-```C
-int check_position_point(void *current_point, void *point) {
-  if (((struct point *)current_point)->x == ((struct point *)point)->x &&
-      ((struct point *)current_point)->y == ((struct point *)point)->y) {
-    return (0);
-  }
-  return (1);
-}
-
-int main(int argc, char **argv) {
-
-  t_list *list = NULL;
-
-  //...
-
-  struct point check_point;
-  check_point.x = 6;
-  check_point.y = 7;
-  list_remove_with_data(&list, &check_point, check_position_point);
-
-  //...
-  
-  return (0);
-}
-```
+For more informations, check out test.c.
 
 Some good features are comming, keep an eye on it.
