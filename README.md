@@ -107,4 +107,4 @@ int main(int argc, char **argv) {
 }
 ```
 
-Some good features is comming, keep an eye on it.
+Some good features are comming, keep an eye on it.
