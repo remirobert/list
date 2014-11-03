@@ -1,4 +1,5 @@
-#include "list.h"
+#include "list/list.h"
+
 struct point {
   int x;
   int y;
