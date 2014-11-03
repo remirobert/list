@@ -12,12 +12,12 @@ typedef int (*match_function)(void *, void *);
 typedef void (*map_function)(LIST *, void *);
 typedef int (*map_function_ret)(LIST *, void *);
 
-# define FREE_DATA_ELEM(current_elem)		\
-  do {						\
-    if ((LIST *)current_elem != NULL &&		\
-	((LIST *)current_elem)->free != NULL)	\
-      current_elem->free(current_elem->data);	\
-  } while(0)					\
+# define FREE_DATA_ELEM(current_elem)					\
+  do {									\
+    if ((LIST *)current_elem != NULL &&					\
+	((LIST *)current_elem)->free != NULL)				\
+      current_elem->free(current_elem->data);				\
+  } while(0)								\
 
 # define FIRST_ELEM_REMOVE_LIST(head_list, node)			\
   do {									\
@@ -62,106 +62,106 @@ typedef int (*map_function_ret)(LIST *, void *);
       }									\
   } while(0)								\
 
-# define LIST_POP(list)				\
-  do {						\
-    void			*ptmp;		\
-    if (list == NULL || *list == NULL) break;	\
-    if ((*list)->next == NULL)			\
-      {						\
-	if ((*list)->free != NULL)		\
-	  (*list)->free((*list)->data);		\
-	free(*list);				\
-	*list = NULL;				\
-	break ;					\
-      }						\
-    if ((*list)->free != NULL)			\
-      (*list)->free((*list)->data);		\
-    ptmp = *list;				\
-    *list = (*list)->next;			\
-    free(ptmp);					\
-  } while(0)					\
+# define LIST_POP(list)							\
+  do {									\
+    void			*ptmp;					\
+    if (list == NULL || *list == NULL) break;				\
+    if ((*list)->next == NULL)						\
+      {									\
+	if ((*list)->free != NULL)					\
+	  (*list)->free((*list)->data);					\
+	free(*list);							\
+	*list = NULL;							\
+	break ;								\
+      }									\
+    if ((*list)->free != NULL)						\
+      (*list)->free((*list)->data);					\
+    ptmp = *list;							\
+    *list = (*list)->next;						\
+    free(ptmp);								\
+  } while(0)								\
 
-# define DELETE_ALL_LIST(list)			\
-    do {					\
-      LIST		*current_elem;		\
-      void			*ptmp;		\
-      if (list == NULL) break;			\
-      current_elem = list;			\
-      while (current_elem != NULL)		\
-	{					\
-	  FREE_DATA_ELEM(current_elem);		\
-	  ptmp = current_elem;			\
-	  current_elem = current_elem->next;	\
-	  free(ptmp);				\
-	}					\
-      list = NULL;				\
-    } while(0)					\
+# define DELETE_ALL_LIST(list)						\
+    do {								\
+      LIST		*current_elem;					\
+      void			*ptmp;					\
+      if (list == NULL) break;						\
+      current_elem = list;						\
+      while (current_elem != NULL)					\
+	{								\
+	  FREE_DATA_ELEM(current_elem);					\
+	  ptmp = current_elem;						\
+	  current_elem = current_elem->next;				\
+	  free(ptmp);							\
+	}								\
+      list = NULL;							\
+    } while(0)								\
 
-# define LIST_PUSH(list, data_element, function)	\
-    do {						\
-      LIST		*current_elem;			\
-      LIST		*new_elem;			\
-      if ((void *)data_element == NULL) break;		\
-      if (*list == NULL)				\
-	{						\
-	  if ((*list = malloc(sizeof(LIST))) == NULL)	\
-	    break ;					\
-	  (*list)->data = (void *)data_element;		\
-	  (*list)->free = (free_function)function;	\
-	  (*list)->next = NULL;				\
-	  break ;					\
-	}						\
-      if ((new_elem = malloc(sizeof(LIST))) == NULL)	\
-	break ;						\
-      new_elem->data = (void *)data_element;		\
-      new_elem->free = (free_function)function;		\
-      new_elem->next = NULL;				\
-      current_elem = *list;				\
-      while (current_elem->next != NULL)		\
-	current_elem = current_elem->next;		\
-      current_elem->next = new_elem;			\
-    } while(0)						\
+# define LIST_PUSH(list, data_element, function)			\
+    do {								\
+      LIST		*current_elem;					\
+      LIST		*new_elem;					\
+      if ((void *)data_element == NULL) break;				\
+      if (*list == NULL)						\
+	{								\
+	  if ((*list = malloc(sizeof(LIST))) == NULL)			\
+	    break ;							\
+	  (*list)->data = (void *)data_element;				\
+	  (*list)->free = (free_function)function;			\
+	  (*list)->next = NULL;						\
+	  break ;							\
+	}								\
+      if ((new_elem = malloc(sizeof(LIST))) == NULL)			\
+	break ;								\
+      new_elem->data = (void *)data_element;				\
+      new_elem->free = (free_function)function;				\
+      new_elem->next = NULL;						\
+      current_elem = *list;						\
+      while (current_elem->next != NULL)				\
+	current_elem = current_elem->next;				\
+      current_elem->next = new_elem;					\
+    } while(0)								\
 
-# define MAP_LIST(list, map_fct, arg)			\
-    do {						\
-	LIST		*current_elem;			\
-	if (list == NULL || map_fct == NULL) break;	\
-	current_elem = list;				\
-	while (current_elem != NULL)			\
-	  {						\
-	    map_fct(current_elem, arg);			\
-	    current_elem = current_elem->next;		\
-	  }						\
-    } while(0)						\
+# define MAP_LIST(list, map_fct, arg)					\
+    do {								\
+	LIST		*current_elem;					\
+	if (list == NULL || map_fct == NULL) break;			\
+	current_elem = list;						\
+	while (current_elem != NULL)					\
+	  {								\
+	    map_fct(current_elem, arg);					\
+	    current_elem = current_elem->next;				\
+	  }								\
+    } while(0)								\
 
-# define MAP_LIST_WITH_BREAK(list, map_fct, arg)		\
-    do {							\
-      LIST		*current_elem;				\
-      if (list == NULL || map_fct == NULL) break;		\
-      current_elem = list;					\
-      while (current_elem != NULL)				\
-	{							\
-	  if (map_fct(current_elem, arg) == 0) return ;		\
-	  current_elem = current_elem->next;			\
-	}							\
-    } while(0)							\
+# define MAP_LIST_WITH_BREAK(list, map_fct, arg)			\
+    do {								\
+      LIST		*current_elem;					\
+      if (list == NULL || map_fct == NULL) break;			\
+      current_elem = list;						\
+      while (current_elem != NULL)					\
+	{								\
+	  if (map_fct(current_elem, arg) == 0) return ;			\
+	  current_elem = current_elem->next;				\
+	}								\
+    } while(0)								\
 
-# define MAP_LIST_WITH_MATCH(list, map_fct, match_fct, arg)	\
-	   do {							\
-	     t_list		*current_elem;			\
-	     if (list == NULL || match_fct == NULL) break;	\
-	     current_elem = list;				\
-	     while (current_elem != NULL)			\
-	       {						\
-		 if (match_fct(current_elem->data, arg))	\
-		   {						\
-		     if (map_fct != NULL)			\
-		       map_fct(current_elem, arg);		\
-		     break ;					\
-		   }						\
-		 current_elem = current_elem->next;		\
-	       }						\
-	   } while(0)						\
+# define MAP_LIST_WITH_MATCH(list, map_fct, match_fct, arg)		\
+	   do {								\
+	     t_list		*current_elem;				\
+	     if (list == NULL || match_fct == NULL) break;		\
+	     current_elem = list;					\
+	     while (current_elem != NULL)				\
+	       {							\
+		 if (match_fct(current_elem->data, arg))		\
+		   {							\
+		     if (map_fct != NULL)				\
+		       map_fct(current_elem, arg);			\
+		     break ;						\
+		   }							\
+		 current_elem = current_elem->next;			\
+	       }							\
+	   } while(0)							\
 
 typedef struct	        s_list
 {
