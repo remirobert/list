@@ -1,5 +1,6 @@
 #include "header/list.h"
 #include <stdio.h>
+#include "list.h"
 
 struct point {
   int x;
@@ -27,7 +28,7 @@ void add_point_to_list(t_list **list, int x, int y) {
   if (new_point) {
     new_point->x = x;
     new_point->y = y;
-    list_push(list, (void *)new_point, free_point);
+    LIST_PUSH(list, (void *)new_point, free_point);
   }
 }
 
